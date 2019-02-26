@@ -40,6 +40,9 @@ let boardGameCollection = (function() {
     },
     numOfBoardGames: function() {
       return boardGames.length;
+    },
+    getBoardGames: function() {
+      return boardGames;
     }
   };
 })();
@@ -59,5 +62,38 @@ console.log(
 );
 
 console.log(boardGameCollection.numOfBoardGames()); //2
+console.log(boardGameCollection.getBoardGames());
 
-console.log(boardGames); //should return reference error cause it does not exist in our returned public object
+// console.log(boardGames); should return reference error cause it does not exist in our returned public object
+
+var myRevealingModule = (function() {
+  var privateCounter = 0;
+
+  function privateFunction() {
+    privateCounter++;
+  }
+
+  function publicFunction() {
+    publicIncrement();
+  }
+
+  function publicIncrement() {
+    privateFunction();
+  }
+
+  function publicGetCount() {
+    return privateCounter;
+  }
+
+  // Reveal public pointers to
+  // private functions and properties
+
+  return {
+    start: publicFunction,
+    increment: publicIncrement,
+    count: publicGetCount
+  };
+})();
+
+console.log(myRevealingModule.increment());
+console.log(myRevealingModule.count());
